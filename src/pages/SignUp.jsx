@@ -3,10 +3,11 @@ import authService from "../services/authService.js";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../contexts/features/authSlice.js";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,6 +23,7 @@ const SignUp = () => {
         setPassword("");
         const { uid, email, displayName } = userCredential.user;
         dispatch(setUser({ uid, email, displayName }));
+        navigate("/");
       })
       .catch((error) => {
         const formattedError = error.message

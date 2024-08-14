@@ -10,11 +10,9 @@ const routes = [
   {
     path: "",
     element: (
-      <Suspense fallback={<Loader />}>
-        <PrivateRoute>
-          <Home />
-        </PrivateRoute>
-      </Suspense>
+      <PrivateRoute>
+        <Home />
+      </PrivateRoute>
     ),
   },
   {

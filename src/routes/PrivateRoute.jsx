@@ -1,31 +1,30 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { setUser, clearUser } from "../contexts/features/authSlice";
 import authService from "../services/authService";
-import { clearUser, setUser } from "../contexts/features/authSlice";
+import Loader from "../pages/Loader";
+
 const PrivateRoute = ({ children }) => {
   const dispatch = useDispatch();
   const { status } = useSelector((state) => state.auth);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const user = await authService.getCurrentUser();
-        if (user) {
-          console.log(user);
-          const { uid, email, displayName } = user;
-          dispatch(setUser({ uid, email, displayName }));
-          console.log(status);
-        } else {
-          dispatch(clearUser());
-        }
-      } catch (error) {
+    authService.getCurrentUser().then((user) => {
+      if (user) {
+        const { uid, email, displayName } = user;
+        dispatch(setUser({ uid, email, displayName }));
+      } else {
         dispatch(clearUser());
       }
-    };
-
-    checkUser();
+      setLoading(false);
+    });
   }, [dispatch]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (!status) {
     return <Navigate to="/login" />;
