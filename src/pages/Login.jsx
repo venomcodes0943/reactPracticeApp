@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import ThemeController from "../components/ThemeController.jsx";
+import { ThemeController } from "../index.js";
 import { useState } from "react";
 import authService from "../services/authService.js";
 import authSlice, { setUser } from "../contexts/features/authSlice.js";

@@ -1,4 +1,4 @@
-import ThemeController from "../components/ThemeController.jsx";
+import { ThemeController } from "../index.js";
 import authService from "../services/authService.js";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
