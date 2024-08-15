@@ -45,7 +45,7 @@ export class AuthService {
   // Signout User
   async doSignOut() {
     try {
-      await signOut(auth);
+      return await signOut(auth);
     } catch (error) {
       throw new Error(`Error While Signing Out: ${error.message}`);
     }

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ThemeController } from "../index.js";
 import { useState } from "react";
 import authService from "../services/authService.js";
-import authSlice, { setUser } from "../contexts/features/authSlice.js";
+import { setUser } from "../contexts/features/authSlice.js";
 import { useDispatch } from "react-redux";
 const Login = () => {
   const dispatch = useDispatch();
@@ -11,8 +11,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLogin = () => {
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+    setIsSubmitting(true);
     authService
       .signIn(email, password)
       .then((user) => {
@@ -23,11 +29,11 @@ const Login = () => {
         navigate("/");
       })
       .catch((err) => {
-        const formattedError = error?.message
-          .split("Firebase: Error (auth/")[1]
-          .replace(").", "");
-        setError(formattedError);
-        console.error("Error creating user: ", error);
+        setError(err.message);
+        console.error("Error creating user: ", err);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
   return (
@@ -44,7 +50,7 @@ const Login = () => {
               Sign up
             </Link>
           </div>
-          {error && <div className="text-red-500 font-bold">{error}</div>}
+          {error && <div className="text-red-500 font-bold mt-2">{error}</div>}
         </div>
         <div className="mb-2 mx-auto mt-4">
           <label htmlFor="email" className="block pb-1 font-bold">
@@ -72,9 +78,10 @@ const Login = () => {
         </div>
         <button
           onClick={handleLogin}
-          className="btn w-full font-bold btn-sm	mt-2 btn-info"
+          disabled={isSubmitting}
+          className="btn w-full font-bold btn-sm mt-2 btn-info"
         >
-          Login
+          {isSubmitting ? "Logging in..." : "Login"}
         </button>
       </div>
     </div>
