@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../contexts/features/authSlice.js";
 import authService from "../services/authService.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "../pages/Loader.jsx";
 const ProfileManager = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { email } = useSelector((state) => state.auth.user);
+
   const [loading, setLoading] = useState(true);
   const handleLogout = (e) => {
     e.preventDefault();
@@ -31,17 +33,14 @@ const ProfileManager = () => {
           role="button"
           className="w-10 h-10 ml-2 rounded-full  shadow-lg flex items-center justify-center"
         >
-          <div className="text-2xl">H</div>
+          <div className="text-2xl">{email[0].toUpperCase()}</div>
         </div>
         <ul
           tabIndex={0}
           className="menu menu-sm dropdown-content bg-base-100 rounded-md z-20 mt-3 w-52 p-2 shadow"
         >
           <li className="mb-1 pb-1">
-            <a className="justify-between">
-              Create Post
-              <span className="badge">New</span>
-            </a>
+            <Link to={'create-post'} className="justify-between">Create Post</Link>
           </li>
           <li className="mb-1 pb-1">
             <a>Settings</a>

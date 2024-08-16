@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="pt-2">
+    <>
       <Container>
         <div className="flex-1">
           <Link
@@ -20,7 +20,7 @@ const Header = () => {
           <ProfileManager />
         </div>
       </Container>
-    </div>
+    </>
   );
 };
 
