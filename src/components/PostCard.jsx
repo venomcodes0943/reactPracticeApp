@@ -12,7 +12,6 @@ const PostCard = ({ title, content, date, slug, image }) => {
           <div className="text-2xl font-bold">{title}</div>
           <div>{date}</div>
         </div>
-        <div className="">{content}</div>
       </div>
     </Link>
   );

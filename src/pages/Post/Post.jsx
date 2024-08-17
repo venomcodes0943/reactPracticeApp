@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import postService from "../../services/postsService";
 import Loader from "../Loader";
 import { useParams } from "react-router-dom";
+import NotFound from "../NotFound";
 const Post = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -13,16 +14,21 @@ const Post = () => {
         setPost(myPost);
       } catch (error) {
         console.error("Failed to fetch post:", error.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchPost();
   }, [slug]);
-  console.log(post);
 
-  if (!post) {
+  if (loading) {
     return <Loader />;
   }
 
+  if (post === null) {
+    return <NotFound />;
+  }
+  
   return (
     <div className="md:px-10 mt-5 max-w-4xl mx-auto">
       <figure>
@@ -42,7 +48,10 @@ const Post = () => {
           })}
         </div>
       </div>
-      <div className="mt-4 text-xl">{post.content}</div>
+      <div
+        className="mt-4 text-xl"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </div>
   );
 };

@@ -9,7 +9,7 @@ const Home = () => {
     async function fetchDocuments() {
       try {
         const docs = await postService.getAllPosts();
-        setDocuments(docs); // Store the documents in state
+        setDocuments(docs);
       } catch (error) {
         console.error("Error fetching documents:", error.message);
       } finally {
@@ -26,7 +26,7 @@ const Home = () => {
   }
 
   return (
-    <div className="flex flex-wrap items-base gap-3 justify-center md:justify-start md:px-10 mt-5">
+    <div className="flex flex-wrap items-base gap-3 justify-center md:justify-start md:px-10 md:mt-5">
       {documents.map((doc) => (
         <PostCard
           title={doc.title}

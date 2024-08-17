@@ -52,11 +52,15 @@ export class PostService {
   async getSingleDoc(val) {
     try {
       const docQuery = query(this.colRef, where("slug", "==", val));
-      const getDocument = await getDocs(docQuery);
+      if (docQuery) {
+        const getDocument = await getDocs(docQuery);
 
-      if (!getDocument.empty) {
-        const document = getDocument.docs[0];
-        return { id: document.id, ...document.data() };
+        if (!getDocument.empty) {
+          const document = getDocument.docs[0];
+          return { id: document.id, ...document.data() };
+        } else {
+          throw new Error("No matching document found");
+        }
       } else {
         throw new Error("No matching document found");
       }
